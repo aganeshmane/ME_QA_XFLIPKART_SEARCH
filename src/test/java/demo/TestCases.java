@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import org.testng.internal.junit.ArrayAsserts;
 
 import java.time.Duration;
 // import java.util.ArrayList;
@@ -21,7 +20,6 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
-import demo.wrappers.MyComparator;
 // import io.github.bonigarcia.wdm.WebDriverManager;
 import demo.wrappers.Wrappers;
 
@@ -172,7 +170,6 @@ public class TestCases {
             count++;
         }
         System.out.println("end Test case: testCase03");
-
     }
 
     @AfterTest
