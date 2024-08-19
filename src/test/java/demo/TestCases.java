@@ -58,7 +58,7 @@ public class TestCases {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
     }
 
-    @Test(enabled = false)
+    @Test
     public void testCase01() throws InterruptedException {
         System.out.println("Start Test case: testCase01");
         driver.get("http://www.flipkart.com/");
@@ -78,13 +78,13 @@ public class TestCases {
         wait.until(ExpectedConditions.urlContains("popularity"));
         Thread.sleep(5000);
 
-        // pring no of product having rating <= 4.0
         List<WebElement> ratings = driver.findElements(By.xpath("//div[@class='yKfJKb row']//span/div"));
+        // pring no of product having rating <= 4.0
         Wrappers.captureTheProductHavingRatingLessthanOrEqualToFour(ratings, driver);
         System.out.println("end Test case: testCase01");
     }
 
-    @Test(enabled = false)
+    @Test
     public void testCase02() throws InterruptedException {
         System.out.println("Start Test case: testCase02");
         driver.get("http://www.flipkart.com/");
