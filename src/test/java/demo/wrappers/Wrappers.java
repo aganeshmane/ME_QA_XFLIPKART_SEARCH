@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -46,6 +49,28 @@ public class Wrappers {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void topFiveRatedProduct(WebDriver driver,List<Integer> viewListInInteger){
+        int count = 0;
+        for (int i = 0; i <= viewListInInteger.size(); i++) {
+            if (count < 5) {
+                count++;
+                int indexValue = viewListInInteger.get(i);
+                NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
+                String formattedNumber = nf.format(indexValue);
+                String productTitle = driver.findElement(
+                        By.xpath("//div[contains(@class,'afFzxY')]/span[@class='Wphh3N' and contains(text(),'" + formattedNumber
+                                + "')]/../..//a[@class='wjcEIp']"))
+                        .getText();
+                String imageURL = driver.findElement(By.xpath(
+                        "//div[contains(@class,'afFzxY')]/span[@class='Wphh3N' and contains(text(),'"+ formattedNumber +"')]/../..//a[@class='wjcEIp']/../..//div[@class='_4WELSP']/img"))
+                        .getAttribute("src");
+
+                System.out.println(viewListInInteger.get(i) + " = " + productTitle + " , " + imageURL);
+            }
+        }
+
     }
     
 

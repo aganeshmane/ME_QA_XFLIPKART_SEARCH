@@ -17,7 +17,6 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 // import java.util.ArrayList;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
 // import io.github.bonigarcia.wdm.WebDriverManager;
@@ -113,12 +112,12 @@ public class TestCases {
         List<WebElement> discounts = driver
                 .findElements(By.xpath("//div[@class='yKfJKb row']/div[2]/div/div/div[3]/span"));
         for (WebElement discount : discounts) {
-            String[] dicountvalue = discount.getText().split("%");
-            if (Integer.parseInt(dicountvalue[0]) > 17) {
+            String dicountvalue = discount.getText().replaceAll("[^0-9]", "");
+            if (Integer.parseInt(dicountvalue) > 17) {
                 titleresult.add(driver.findElement(By.xpath(
                         "//div[@class='yKfJKb row']/div[2]/div/div/div[3]/span/../../../../../div/div[@class='KzDlHZ']"))
                         .getText());
-                discountResult.add(Integer.parseInt(dicountvalue[0]));
+                discountResult.add(Integer.parseInt(dicountvalue));
             }
         }
         // Printing the title and discount value of product whose dicount > 17
@@ -145,30 +144,16 @@ public class TestCases {
 
         Wrappers.selectCheckBox(driver, "4★ & above");
         Thread.sleep(5000);
-        List<WebElement> productTitleList = driver.findElements(
-                By.xpath("//div[contains(@class,'afFzxY')]/span[@class='Wphh3N']/../..//a[@class='wjcEIp']"));
-        List<WebElement> imageURLList = driver.findElements(By.xpath(
-                "//div[contains(@class,'afFzxY')]/span[@class='Wphh3N']/../..//a[@class='wjcEIp']/../..//div[@class='_4WELSP']/img"));
         List<WebElement> viewsList = driver
                 .findElements(By.xpath("//div[contains(@class,'afFzxY')]/span[@class='Wphh3N']"));
-                NavigableMap<Integer, List<String>> hm = new TreeMap<Integer, List<String>>(Collections.reverseOrder());
-        List<String> values = new ArrayList<String>();
-        for (int i = 0; i < productTitleList.size(); i++) {
-            values.add(productTitleList.get(i).getText());
-            // Thread.sleep(3000);
-            values.add(imageURLList.get(i).getAttribute("src"));
-            hm.put(Integer.parseInt(viewsList.get(i).getText().replaceAll("[(,)]", "")), values);
+
+        List<Integer> viewListInInteger = new ArrayList<>();
+        for (int i = 0; i < viewsList.size(); i++) {
+            viewListInInteger.add(Integer.parseInt(viewsList.get(i).getText().replaceAll("[^0-9]", "")));
         }
-        // Iterating HashMap through for loop
-        int count = 0;
-        for (Entry<Integer, List<String>> set : hm.entrySet()) {
-            if (count < 5) {
-                // Printing all elements of a Map
-                System.out.println(set.getKey() + " = "
-                        + set.getValue());
-            }
-            count++;
-        }
+        // reverseOrder() method to sort in descending order
+        Collections.sort(viewListInInteger, Collections.reverseOrder());
+        Wrappers.topFiveRatedProduct(driver, viewListInInteger);
         System.out.println("end Test case: testCase03");
     }
 
