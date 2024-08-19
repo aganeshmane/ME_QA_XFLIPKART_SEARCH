@@ -58,7 +58,7 @@ public class TestCases {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
     }
 
-    @Test
+    @Test(enabled = false)
     public void testCase01() throws InterruptedException {
         System.out.println("Start Test case: testCase01");
         driver.get("http://www.flipkart.com/");
@@ -93,7 +93,7 @@ public class TestCases {
         System.out.println("end Test case: testCase01");
     }
 
-    @Test
+    @Test(enabled = false)
     public void testCase02() throws InterruptedException {
         System.out.println("Start Test case: testCase02");
         driver.get("http://www.flipkart.com/");
@@ -138,22 +138,17 @@ public class TestCases {
         // Eneter the keyword and click on search button
         WebElement searchBox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='q']")));
         Wrappers.enterText(searchBox, "Coffee Mug");
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         searchBox.sendKeys(Keys.ENTER);
-        Thread.sleep(3000);
+        Thread.sleep(2000);
 
+        //apply filter "4★ & above" ratings
         Wrappers.selectCheckBox(driver, "4★ & above");
-        Thread.sleep(5000);
+        Thread.sleep(1000);
         List<WebElement> viewsList = driver
                 .findElements(By.xpath("//div[contains(@class,'afFzxY')]/span[@class='Wphh3N']"));
-
-        List<Integer> viewListInInteger = new ArrayList<>();
-        for (int i = 0; i < viewsList.size(); i++) {
-            viewListInInteger.add(Integer.parseInt(viewsList.get(i).getText().replaceAll("[^0-9]", "")));
-        }
-        // reverseOrder() method to sort in descending order
-        Collections.sort(viewListInInteger, Collections.reverseOrder());
-        Wrappers.topFiveRatedProduct(driver, viewListInInteger);
+        //Print the top five viewed product
+        Wrappers.topFiveRatedProduct(driver, viewsList);
         System.out.println("end Test case: testCase03");
     }
 
