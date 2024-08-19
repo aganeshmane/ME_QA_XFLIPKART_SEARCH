@@ -64,8 +64,8 @@ public class TestCases {
         driver.get("http://www.flipkart.com/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        // Eneter the keyword and click on search button
         WebElement searchBox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='q']")));
+        // Eneter the keyword and click on search button
         Wrappers.enterText(searchBox, "Washing Machine");
         Thread.sleep(3000);
         searchBox.sendKeys(Keys.ENTER);
@@ -80,16 +80,7 @@ public class TestCases {
 
         // pring no of product having rating <= 4.0
         List<WebElement> ratings = driver.findElements(By.xpath("//div[@class='yKfJKb row']//span/div"));
-        int count = 0;
-        for (WebElement rating : ratings) {
-            String ratingInString = rating.getText();
-            // System.out.println(ratingInString);
-            double ratingValue = Double.parseDouble(ratingInString);
-            if (ratingValue <= 4.0) {
-                count++;
-            }
-        }
-        System.out.println("the count of items with rating less than or equal to 4stars:" + count);
+        Wrappers.captureTheProductHavingRatingLessthanOrEqualToFour(ratings, driver);
         System.out.println("end Test case: testCase01");
     }
 
@@ -99,33 +90,17 @@ public class TestCases {
         driver.get("http://www.flipkart.com/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        // Eneter the keyword and click on search button
         WebElement searchBox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='q']")));
+        // Eneter the keyword and click on search button
         Wrappers.enterText(searchBox, "iPhone");
         Thread.sleep(3000);
         searchBox.sendKeys(Keys.ENTER);
         Thread.sleep(3000);
 
-        // storing title and discount value in list
-        List<String> titleresult = new ArrayList<>();
-        List<Integer> discountResult = new ArrayList<>();
         List<WebElement> discounts = driver
                 .findElements(By.xpath("//div[@class='yKfJKb row']/div[2]/div/div/div[3]/span"));
-        for (WebElement discount : discounts) {
-            String dicountvalue = discount.getText().replaceAll("[^0-9]", "");
-            if (Integer.parseInt(dicountvalue) > 17) {
-                titleresult.add(driver.findElement(By.xpath(
-                        "//div[@class='yKfJKb row']/div[2]/div/div/div[3]/span/../../../../../div/div[@class='KzDlHZ']"))
-                        .getText());
-                discountResult.add(Integer.parseInt(dicountvalue));
-            }
-        }
-        // Printing the title and discount value of product whose dicount > 17
-        for (String title : titleresult) {
-            for (Integer discountValue : discountResult) {
-                System.out.println("The title of product is " + title + " and discount value" + discountValue);
-            }
-        }
+        // storing title and discount value in list
+        Wrappers.StoreTitleAndDiscount(driver, discounts);
         System.out.println("end Test case: testCase02");
     }
 
@@ -142,12 +117,12 @@ public class TestCases {
         searchBox.sendKeys(Keys.ENTER);
         Thread.sleep(2000);
 
-        //apply filter "4★ & above" ratings
+        // apply filter "4★ & above" ratings
         Wrappers.selectCheckBox(driver, "4★ & above");
         Thread.sleep(1000);
         List<WebElement> viewsList = driver
                 .findElements(By.xpath("//div[contains(@class,'afFzxY')]/span[@class='Wphh3N']"));
-        //Print the top five viewed product
+        // Print the top five viewed product
         Wrappers.topFiveRatedProduct(driver, viewsList);
         System.out.println("end Test case: testCase03");
     }

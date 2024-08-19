@@ -2,7 +2,7 @@ package demo.wrappers;
 
 import java.util.*;
 import java.text.NumberFormat;
-import java.util.Locale;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +13,49 @@ public class Wrappers {
     /*
      * Write your selenium wrappers here
      */
+
+    public static void StoreTitleAndDiscount(WebDriver driver, List<WebElement> discounts) {
+        try {
+            List<String> titleresult = new ArrayList<>();
+            List<Integer> discountResult = new ArrayList<>();
+            for (WebElement discount : discounts) {
+                String dicountvalue = discount.getText().replaceAll("[^0-9]", "");
+                if (Integer.parseInt(dicountvalue) > 17) {
+                    titleresult.add(driver.findElement(By.xpath(
+                            "//div[@class='yKfJKb row']/div[2]/div/div/div[3]/span/../../../../../div/div[@class='KzDlHZ']"))
+                            .getText());
+                    discountResult.add(Integer.parseInt(dicountvalue));
+                }
+            }
+            // Printing the title and discount value of product whose dicount > 17
+            for (String title : titleresult) {
+                for (Integer discountValue : discountResult) {
+                    System.out.println("The title of product is " + title + " and discount value" + discountValue);
+                }
+            }
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void captureTheProductHavingRatingLessthanOrEqualToFour(List<WebElement> ratings, WebDriver driver) {
+        try {
+            int count = 0;
+            for (WebElement rating : ratings) {
+                String ratingInString = rating.getText();
+                // System.out.println(ratingInString);
+                double ratingValue = Double.parseDouble(ratingInString);
+                if (ratingValue <= 4.0) {
+                    count++;
+                }
+            }
+            System.out.println("the count of items with rating less than or equal to 4stars:" + count);
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void enterText(WebElement element, String text) {
         try {
