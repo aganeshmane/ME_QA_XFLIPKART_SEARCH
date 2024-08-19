@@ -56,6 +56,8 @@ public class TestCases {
 
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.get("http://www.flipkart.com/");
+
     }
 
     @Test
@@ -71,9 +73,9 @@ public class TestCases {
         searchBox.sendKeys(Keys.ENTER);
         Thread.sleep(3000);
 
-        // Applying sorting on the basis popularity
         WebElement popularityButton = wait
                 .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[normalize-space()='Popularity']")));
+        // Applying sorting on the basis popularity
         popularityButton.click();
         wait.until(ExpectedConditions.urlContains("popularity"));
         Thread.sleep(5000);
@@ -107,19 +109,19 @@ public class TestCases {
     @Test
     public void testCase03() throws InterruptedException {
         System.out.println("Start Test case: testCase03");
-        driver.get("http://www.flipkart.com/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        // Eneter the keyword and click on search button
         WebElement searchBox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='q']")));
+        // Eneter the keyword and click on search button
         Wrappers.enterText(searchBox, "Coffee Mug");
         Thread.sleep(2000);
         searchBox.sendKeys(Keys.ENTER);
         Thread.sleep(2000);
 
         // apply filter "4★ & above" ratings
-        Wrappers.selectCheckBox(driver, "4★ & above");
-        Thread.sleep(1000);
+        Wrappers.selectCheckBox(driver, "4");
+        Thread.sleep(3000);
+
         List<WebElement> viewsList = driver
                 .findElements(By.xpath("//div[contains(@class,'afFzxY')]/span[@class='Wphh3N']"));
         // Print the top five viewed product
@@ -129,7 +131,7 @@ public class TestCases {
 
     @AfterTest
     public void endTest() {
-        // driver.close();
+        //driver.close();
         driver.quit();
     }
 }
